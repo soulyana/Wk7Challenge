@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/">
+<head th:replace="/fragments/layout::htmlhead">
+    <meta charset="UTF-8">
+    <title>Add a Room</title>
+</head>
+<body>
+
+<!--Use only th:action - it includes additional parameters that will cause your security to FAIL if not included-->
+<form th:action="@{/addroom}" th:object="${aRoom}" method="post">
+
+    <input type="hidden" th:value="*{id}">
+  <div class="container">
+      <div class="form-group">
+          <label for="description">Description</label>
+          <textarea th:field="*{description}" class="form-control" cols="30" rows="10"></textarea>
+      </div>
+
+      <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" class="form-control" th:field="*{address}">
+      </div>
+
+      <div class="form-group">
+          <label for="theState">State</label>
+          <input type="text" class="form-control" th:field="*{theState}">
+      </div>
+
+      <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" th:field="*{city}">
+      </div>
+
+      <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" class="form-control" th:field="*{price}">
+      </div>
+
+      <div class="form-group">
+          <label for="wifi">Has WiFi?</label>
+          <input type="checkbox" th:checked=*{wifi} th:field="*{wifi}">
+      </div>
+
+      <div class="form-group">
+          <label for="cableType">Cable Type</label>
+          <select th:field="*{cableType}">
+              <option value="basic">Basic</option>
+              <option value="normal">Normal</option>
+              <option value="premium">Premium</option>
+          </select>
+      </div>
+
+      <div class="form-group">
+          <label for="privateBathroom">Private Bathroom?</label>
+          <input type="checkbox" th:field="*{privateBathroom}">
+      </div>
+
+
+      <div class="form-group">
+          <label for="rented">Rented?</label>
+          <input type="checkbox" th:field="*{rented}">
+      </div>
+
+      <div class="form-group">
+          <label for="privateListing">List as Private?</label>
+          <input type="checkbox" th:field="*{privateListing}">
+      </div>
+
+
+      <button class="btn btn-default" type="submit">Save</button>
+  </div>
+    
+</form>
+</body>
+</html>

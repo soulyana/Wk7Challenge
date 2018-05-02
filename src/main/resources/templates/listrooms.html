@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head th:replace="/fragments/layout::htmlhead">
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!--Show all rooms. Copied from the index form -->
+<!--You can make this into a fragment OR call this page when needed-->
+<div>
+    <table class="table">
+        <thead>
+
+        </thead>
+        <tbody>
+
+        <tr th:each="aRoom:${rooms}">
+            <td th:text="${aRoom.description}==''?'No description':${aRoom.description}"></td>
+            <td th:text="${aRoom.address}"></td>
+            <td th:text="${aRoom.city}"></td>
+            <td th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>
+            <td th:text="${aRoom.privateListing}==true?'Private Listing':'Public Listing'"></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
