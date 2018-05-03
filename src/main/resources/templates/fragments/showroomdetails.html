@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div class="container">
-    <p></p>
+    <div th:fragment="showroomdetails">
+        <h3>Room details</h3>
+         <p th:text="${aRoom.description}"></p>
+         <p th:text="${aRoom.price}"></p>
+        <!--Everything can be styled and added here-->
+    </div>
 
 </div>
 </body>

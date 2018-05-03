@@ -1,5 +1,5 @@
 <!Doctype html>
-<html lang="en" xmlns:th="www.thymeleaf.org">
+<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/springsecurity4">
 <head  th:fragment="htmlhead">
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.ico">
@@ -32,14 +32,14 @@
     <a class="navbar-brand" href="/">Dave's List</a>
     <div class="collapse navbar-collapse" id="navbar-menu">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#pk">Link</a>
+            <li class="nav-item" sec:authorize="hasAuthority('DAVE')">
+                <a class="nav-link" th:href="@{/addroom}">Add a Room</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#pk">Link</a>
+                <a class="nav-link" th:href="@{/viewrooms}">View Rooms</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign up</a>
+                <a class="nav-link" th:href="@{/signup}">Sign up</a>
             </li>
             <li class="nav-item">
                 <!--Log in/log out link using authorization expressions-->

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org">
-<head th:replace="/fragments/layout::htmlhead">
+<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/springsecurity4">
+
+<head th:replace="/fragments/pktemplate::htmlhead">
+
     <meta charset="UTF-8">
 </head>
 <body>
@@ -20,6 +22,8 @@
             <td th:text="${aRoom.city}"></td>
             <td th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>
             <td th:text="${aRoom.privateListing}==true?'Private Listing':'Public Listing'"></td>
+            <td sec:authorize="isAuthenticated()"><a th:href="@{/view/{id}(id=${aRoom.id})}">View Details</a></td>
+            <td sec:authorize="hasAuthority('DAVE')"><a th:href="@{/updateroom/{id}(id=${aRoom.id})}">Update Details</a></td>
         </tr>
 
         </tbody>

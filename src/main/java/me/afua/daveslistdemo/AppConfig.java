@@ -39,7 +39,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         return new SSUDS(users);
     }
 
-    private String[] everyone = {"/","/viewrooms","/newindex","/assets/**","/signup","/updateroom"};
+    private String[] everyone = {"/","/viewrooms","/newindex","/assets/**","/signup","/updateroom","/pkindex"};
     private String[] administrators = {"/addroom","/saveroom","/**","/h2/**"};
     private String[] dave = administrators;
 

@@ -12,6 +12,9 @@ public class Room {
     @Lob
     private String description;
 
+    @Lob
+    private String rules;
+
     private String address;
 
     private String city;
@@ -48,6 +51,14 @@ public class Room {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
     }
 
     public void setDescription(String description) {

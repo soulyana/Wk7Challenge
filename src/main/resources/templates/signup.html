@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
-<head>
+<head th:replace="/fragments/pktemplate::htmlhead">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <form th:action="@{/signup}" th:method="post" th:object="${aUser}">
-        <div>
-            <label for="username">Username</label>
-            <input type="text" th:field="*{username}">
-        </div>
-        <div>
-            <label for="username">Username</label>
-            <input type="text" th:field="*{password}">
-        </div>
-        <button type="submit">Save</button>
-    </form>
+<div class="container">
+    <div class="register-card">
+        <form th:action="@{/signup}" th:method="post" th:object="${aUser}">
+            <div>
+                <label for="username">Username</label>
+                <input type="text" th:field="*{username}">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="text" th:field="*{password}">
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
 </body>
 </html>

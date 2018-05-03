@@ -1,14 +1,16 @@
 package me.afua.daveslistdemo;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
-import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -53,24 +55,32 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/updateroom")
-    public String updateRoomDetails(HttpServletRequest request, Model model)
+    @GetMapping("/updateroom/{id}")
+    public String updateRoomDetails(@PathVariable("id") long id, HttpServletRequest request, Model model)
     {
-        model.addAttribute("aUser",users.findById(new Long(request.getParameter("id"))));
-        return "addroom";
+        model.addAttribute("aRoom",rooms.findById(id).get());
+        return "editRoom";
     }
 
+    @GetMapping("/view/{id}")
+    public String viewRoomDetails(@PathVariable("id") long id, HttpServletRequest request, Model model)
+    {
+        model.addAttribute("aRoom",rooms.findById(id).get());
+        return "showdetails";
+    }
     @GetMapping("/viewrooms")
     public String viewRooms(Authentication auth, Model model)
     {
-        if (auth == null) {
-            //User is not
+        if (auth==null) {
+            //User is not authenticated
             model.addAttribute("rooms",rooms.findAllByPrivateListing(false));
+            System.out.println("Listing public rooms");
         }
         else
         {
             //User is authenticated
             model.addAttribute("rooms",rooms.findAll());
+            System.out.println("Listing all rooms");
         }
         return "listrooms";
     }
@@ -103,6 +113,12 @@ public class MainController {
         return "redirect:/";
     }
 
+    @GetMapping("/pkindex")
+    public String indexThis()
+    {
+        return "pkindex";
+    }
+
     @PostConstruct
     public void addUsers()
     {
@@ -115,6 +131,23 @@ public class MainController {
         AppRole aRole = new AppRole();
         aRole.setName("ADMIN");
         roles.save(aRole);
+
+        Room aRoom = new Room();
+        aRoom.setAddress("123 Main Street");
+        aRoom.setCableType("basic");
+        aRoom.setCity("New York");
+        aRoom.setDescription("A private room preset by app ");
+        rooms.save(aRoom);
+
+        aRoom = new Room();
+        aRoom.setAddress("124 Main Street");
+        aRoom.setCableType("basic");
+        aRoom.setCity("New York");
+        aRoom.setDescription("A public room preset by app ");
+        aRoom.setPrivateListing(false);
+        rooms.save(aRoom);
+
+
 
 
     }
