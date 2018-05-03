@@ -1,4 +1,6 @@
 package me.afua.daveslistdemo;
 
-public class AppRoleRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface AppRoleRepository extends CrudRepository<AppRole,Long> {
 }

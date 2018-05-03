@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import javax.naming.Binding;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -15,13 +18,20 @@ public class MainController {
     @Autowired
     RoomRepository rooms;
 
+    @Autowired
+    AppUserRepository users;
+
+    @Autowired
+    AppRoleRepository roles;
+
     @GetMapping("/")
     public String showIndex(Model model)
     {
 
         model.addAttribute("rooms",rooms.findAll());
-        return "oindex";
+        return "index";
     }
+
 
     @GetMapping("/addroom")
     public String addRoom(Model model)
@@ -33,7 +43,6 @@ public class MainController {
     @PostMapping("/addroom")
     public String addRoom(@Valid @ModelAttribute("aRoom") Room room, BindingResult result)
     {
-        System.out.println(result.toString());
         if(result.hasErrors())
         {
             return "addRoom";
@@ -42,6 +51,13 @@ public class MainController {
       rooms.save(room);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/updateroom")
+    public String updateRoomDetails(HttpServletRequest request, Model model)
+    {
+        model.addAttribute("aUser",users.findById(new Long(request.getParameter("id"))));
+        return "addroom";
     }
 
     @GetMapping("/viewrooms")
@@ -64,4 +80,44 @@ public class MainController {
     {
         return "index";
     }
+
+
+    @GetMapping("/signup")
+    public String signUpNewUser(Model model)
+    {
+
+        model.addAttribute("aUser",new AppUser());
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String saveNewUser(@Valid @ModelAttribute("aUser") AppUser user, BindingResult result)
+    {
+        if(result.hasErrors())
+            return "signup";
+        else
+        {
+            users.save(user);
+
+        }
+        return "redirect:/";
+    }
+
+    @PostConstruct
+    public void addUsers()
+    {
+        //Add users before the application loads without a command line runner.
+        AppUser aUser = new AppUser();
+        aUser.setUsername("newuser");
+        aUser.setPassword("password");
+        users.save(aUser);
+
+        AppRole aRole = new AppRole();
+        aRole.setName("ADMIN");
+        roles.save(aRole);
+
+
+    }
+
+
 }

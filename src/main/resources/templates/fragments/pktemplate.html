@@ -29,7 +29,7 @@
         <span class="navbar-toggler-icon"></span>
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Work in progress</a>
+    <a class="navbar-brand" href="/">Dave's List</a>
     <div class="collapse navbar-collapse" id="navbar-menu">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -38,19 +38,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="#pk">Link</a>
             </li>
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" href="#pk" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li class="dropdown-header">Dropdown header</li>
-                    <a class="dropdown-item" href="#pk">Action</a>
-                    <a class="dropdown-item" href="#pk">Another action</a>
-                    <a class="dropdown-item" href="#pk">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#pk">Separated link</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#pk">Another separated link</a>
-                </ul>
-            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="/signup">Sign up</a>
+            </li>
+            <li class="nav-item">
+                <!--Log in/log out link using authorization expressions-->
+                <a class="nav-link pull-right" th:href="${#authorization.expression('isAuthenticated()')}?@{/logout}:@{/login}" th:text="${#authorization.expression('isAuthenticated()')}?'Log out':'Log in'">Logging</a>
+            </li>
         </ul>
     </div>
 </nav>
