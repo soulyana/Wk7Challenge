@@ -5,6 +5,9 @@
     <title>Add a Room</title>
 </head>
 <body>
+<!--    navbar comes here          -->
+<nav th:replace="/fragments/pktemplate::shownav"></nav>
+<!-- end navbar  -->
 
 <!--Use only th:action - it includes additional parameters that will cause your security to FAIL if not included-->
 <form th:action="@{/addroom}" th:object="${aRoom}" method="post">

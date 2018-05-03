@@ -31,6 +31,9 @@ public class MainController {
     {
 
         model.addAttribute("rooms",rooms.findAll());
+        model.addAttribute("usersregistered",users.count());
+        model.addAttribute("rented",rooms.countAllByRented(true));
+        model.addAttribute("unrented",rooms.countAllByRented(false));
         return "index";
     }
 
@@ -62,11 +65,19 @@ public class MainController {
         return "editRoom";
     }
 
+    @GetMapping("/showprivate")
+    public String showPrivateListings(Model model)
+    {
+        model.addAttribute("rooms",rooms.findAllByPrivateListing(true));
+        System.out.println("Listing private rooms");
+        model.addAttribute("title", "Dave's Privately Listed Rooms");
+        return "listrooms";
+    }
     @GetMapping("/view/{id}")
     public String viewRoomDetails(@PathVariable("id") long id, HttpServletRequest request, Model model)
     {
         model.addAttribute("aRoom",rooms.findById(id).get());
-        return "showdetails";
+        return "showroomdetails";
     }
     @GetMapping("/viewrooms")
     public String viewRooms(Authentication auth, Model model)
@@ -74,15 +85,27 @@ public class MainController {
         if (auth==null) {
             //User is not authenticated
             model.addAttribute("rooms",rooms.findAllByPrivateListing(false));
+            model.addAttribute("title", "Dave's Publicly Rooms");
             System.out.println("Listing public rooms");
         }
         else
         {
             //User is authenticated
             model.addAttribute("rooms",rooms.findAll());
+            model.addAttribute("title", "Dave's Listed Rooms");
             System.out.println("Listing all rooms");
         }
+
         return "listrooms";
+    }
+
+    @GetMapping("/changerented/{id}")
+    public String changeRented(@PathVariable("id") long id)
+    {
+        Room thisRoom= rooms.findById(id).get();
+        thisRoom.setRented(!thisRoom.isRented());
+        rooms.save(thisRoom);
+        return "redirect:/viewrooms";
     }
 
     @GetMapping("/newindex")

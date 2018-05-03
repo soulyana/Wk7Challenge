@@ -5,7 +5,9 @@
     <title>Add a Room</title>
 </head>
 <body>
-
+<!--    navbar comes here          -->
+<nav th:replace="/fragments/pktemplate::shownav"></nav>
+<!-- end navbar  -->
 <!--Use only th:action - it includes additional parameters that will cause your security to FAIL if not included-->
 <form th:action="@{/addroom}" th:object="${aRoom}" method="post">
 
@@ -14,6 +16,11 @@
       <div class="form-group">
           <label for="description">Description</label>
           <textarea th:field="*{description}" class="form-control" cols="20" rows="5"></textarea>
+      </div>
+
+      <div class="form-group">
+          <label for="rules">Rules</label>
+          <textarea th:field="*{rules}" class="form-control" cols="20" rows="5"></textarea>
       </div>
 
       <div class="form-group">

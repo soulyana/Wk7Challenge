@@ -9,7 +9,12 @@
 
 <!--Show all rooms. Copied from the index form -->
 <!--You can make this into a fragment OR call this page when needed-->
-<div>
+<!--    navbar comes here          -->
+<nav th:replace="/fragments/pktemplate::shownav"></nav>
+<!-- end navbar  -->
+
+<div class="container">
+    <h3 th:text="${title}"></h3>
     <table class="table">
         <thead>
 
@@ -20,14 +25,25 @@
             <td th:text="${aRoom.description}==''?'No description':${aRoom.description}"></td>
             <td th:text="${aRoom.address}"></td>
             <td th:text="${aRoom.city}"></td>
-            <td th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>
-            <td th:text="${aRoom.privateListing}==true?'Private Listing':'Public Listing'"></td>
+            <td th:text="${aRoom.theState}"></td>
+            <td th:text="${aRoom.price}"></td>
+            <td th:text="${aRoom.rented}==true?'Rented':'Available'" th:classappend="${aRoom.rented==true}?'red':''"></td>
+            <td sec:authorize="isAuthenticated()"><a th:href="@{/view/{id}(id=${aRoom.id})}">View Details</a></td>
+            <td sec:authorize="hasAuthority('DAVE')"><a th:href="@{/changerented/{id}(id=${aRoom.id})}" th:text="${aRoom.rented}==true?'Return keys':'Rent'"></a></td>
             <td sec:authorize="isAuthenticated()"><a th:href="@{/view/{id}(id=${aRoom.id})}">View Details</a></td>
             <td sec:authorize="hasAuthority('DAVE')"><a th:href="@{/updateroom/{id}(id=${aRoom.id})}">Update Details</a></td>
-        </tr>
+            <td th:if="${aRoom.rented}"><i class="nc-icon nc-key-25" aria-hidden="true"></i></td>
+            <td th:if="${aRoom.rented}==false"><i class="nc-icon nc-lock-circle-open" aria-hidden="true"></i></td>
+            <!--   <td th:text="${aRoom.rules}==''?'Everything goes!':${aRoom.rules}"></td>
 
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
+               <td th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>
+               <td th:text="${aRoom.privateListing}==true?'Private Listing':'Public Listing'"></td>
+            -->
+
+           </tr>
+
+           </tbody>
+       </table>
+   </div>
+   </body>
+   </html>

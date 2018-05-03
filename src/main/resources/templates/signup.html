@@ -5,17 +5,23 @@
     <title>Title</title>
 </head>
 <body>
+<!--    navbar comes here -->
+<nav th:replace="/fragments/pktemplate::shownav"></nav>
+<!-- end navbar  -->
+
 <div class="container">
-    <div class="register-card">
+    <div class="col-4">
         <form th:action="@{/signup}" th:method="post" th:object="${aUser}">
             <div>
                 <label for="username">Username</label>
-                <input type="text" th:field="*{username}">
+                <input type="text" th:field="*{username}" class="form-control">
             </div>
+
             <div>
                 <label for="password">Password</label>
-                <input type="text" th:field="*{password}">
+                <input type="text" th:field="*{password}"  class="form-control">
             </div>
+
             <button type="submit">Save</button>
         </form>
     </div>
