@@ -1,4 +1,4 @@
-package me.afua.daveslistdemo;
+package me.soulyana.wk7challenge;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +39,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         return new SSUDS(users);
     }
 
-    private String[] everyone = {"/","/viewrooms","/newindex","/assets/**","/signup","/updateroom","/pkindex"};
-    private String[] administrators = {"/addroom","/saveroom","/**","/h2/**","/viewrooms"};
+    private String[] everyone = {"/", "/viewrooms","/newindex","/assets/**","/signup","/updateroom","/pkindex"};
+    private String[] administrators = {"/addroom", "/saveroom","/**","/h2/**","/viewrooms"};
     private String[] dave = administrators;
 
     @Override
@@ -48,6 +48,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(everyone).permitAll()
                 .antMatchers(dave).hasAuthority("DAVE")
+                .antMatchers(administrators).hasAuthority("ADMIN")
+                .antMatchers("/getquestions").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -66,7 +68,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("DaveWolf")
                 .password(passwordEncoder().encode("begreat")).authorities("DAVE")
                 .and()
-                .withUser("adminuser").password("admin").authorities("ADMIN")
+                .withUser("adminuser").password(passwordEncoder().encode("admin")).authorities("ADMIN")
                 .and()
                 .passwordEncoder(passwordEncoder());;
 

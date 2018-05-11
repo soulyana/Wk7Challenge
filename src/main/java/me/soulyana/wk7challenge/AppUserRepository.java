@@ -1,4 +1,4 @@
-package me.afua.daveslistdemo;
+package me.soulyana.wk7challenge;
 
 import org.springframework.data.repository.CrudRepository;
 

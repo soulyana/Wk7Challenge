@@ -1,4 +1,4 @@
-package me.afua.daveslistdemo;
+package me.soulyana.wk7challenge;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -21,20 +22,56 @@ public class MainController {
     RoomRepository rooms;
 
     @Autowired
+    ResultsRepository questions;
+
+    @Autowired
     AppUserRepository users;
 
     @Autowired
     AppRoleRepository roles;
 
-    @GetMapping("/")
+    @GetMapping("/getquestions")
     public String showIndex(Model model)
     {
-
+        RestTemplate restTemplate = new RestTemplate();
+        Trivia trivia = restTemplate.getForObject("https://opentdb.com/api.php?amount=10", Trivia.class);
+        System.out.println(trivia.getResults().size());
+        for(Results aResult: trivia.getResults()) {
+          questions.save(aResult);
+        }
+        model.addAttribute("trivia", questions.findAll());
         model.addAttribute("rooms",rooms.findAll());
         model.addAttribute("usersregistered",users.count());
         model.addAttribute("rented",rooms.countAllByRented(true));
         model.addAttribute("unrented",rooms.countAllByRented(false));
         return "index";
+    }
+    @GetMapping("/")
+    public String showIndex() {
+        return "oindex";
+    }
+
+    @GetMapping("/addquestion")
+    public String addQuestion(Model model, Authentication auth) {
+        model.addAttribute("user", users.findByUsername(auth.getName()));
+        return "addquestion";
+    }
+
+    @PostMapping("/addquestions")
+    public String saveQuestion(@ModelAttribute("user") AppUser thisUser, HttpServletRequest request,
+                               BindingResult result, Model model, Authentication auth) {
+        String toAdd = request.getParameter("addquestion");
+        thisUser.getQuestions().add(toAdd);
+        users.save(thisUser);
+        return "redirect:/getquestions";
+    }
+
+    @GetMapping("/delete/question/{question}")
+    public String deleteQuestion(@PathVariable("question") String question, Authentication auth) {
+        AppUser thisUser = users.findByUsername(auth.getName());
+        thisUser.getQuestions().remove(question);
+        users.save(thisUser);
+        return "redirect:/getquestions";
     }
 
 
@@ -42,7 +79,7 @@ public class MainController {
     public String addRoom(Model model)
     {
         model.addAttribute("aRoom",new Room());
-        return "addRoom";
+        return "addquestion";
     }
 
     @PostMapping("/addroom")
@@ -50,7 +87,7 @@ public class MainController {
     {
         if(result.hasErrors())
         {
-            return "addRoom";
+            return "addquestion";
         }
         else
       rooms.save(room);

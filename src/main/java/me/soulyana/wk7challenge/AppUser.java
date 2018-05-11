@@ -1,9 +1,10 @@
-package me.afua.daveslistdemo;
+package me.soulyana.wk7challenge;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,9 @@ public class AppUser {
     private String username;
 
     private String password;
+
+    @Column
+    private ArrayList<String> questions;
 
     //Include the relationship with roles here
     @ManyToMany(mappedBy = "users",fetch =FetchType.EAGER)
@@ -68,5 +72,14 @@ public class AppUser {
 
     public void setRoles(Set<AppRole> roles) {
         this.roles = roles;
+    }
+
+
+    public ArrayList<String> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<String> questions) {
+        this.questions = questions;
     }
 }

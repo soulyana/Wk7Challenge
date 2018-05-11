@@ -1,4 +1,4 @@
-package me.afua.daveslistdemo;
+package me.soulyana.wk7challenge;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

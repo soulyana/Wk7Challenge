@@ -1,90 +1,128 @@
 <!Doctype html>
 <html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="www.thymeleaf.org/extras/springsecurity4">
-    <head th:replace="/fragments/pktemplate::htmlhead">
-    </head>
+<head th:replace="/fragments/pktemplate::htmlhead">
+</head>
 <body>
 
 <!--    navbar comes here          -->
 <nav th:replace="/fragments/pktemplate::shownav"></nav>
 <!-- end navbar  -->
 <div class="container">
-        <div class="wrapper">
+    <div class="wrapper">
 
-            <!-- content comes here-->
+        <!-- content comes here-->
 
-            <!--The code from the oindex page is here-->
+        <!--The code from the oindex page is here-->
 
-            <div sec:authorize="hasAuthority('DAVE')">
-                    <h2>Only Dave should be able to see this</h2>
-                <div class="section section-nude">
-                        <h2>Dave's Dashboard</h2>
+        <div sec:authorize="hasAuthority('DAVE')">
+            <h2>Only Dave should be able to see this</h2>
+            <div class="section section-nude">
+                <h2>Dave's Dashboard</h2>
 
-                        <div class="card-deck">
-                            <div class="card bg-primary">
-                                <div class="card-body text-center">
-                                    <h2 class="card-text" th:text="${usersregistered}"></h2>
-                                    <p>user(s)</p>
-                                </div>
-                            </div>
-                            <div class="card bg-warning">
-                                <div class="card-body text-center">
-                                    <h2 class="card-text" th:text="${rented}"></h2>
-                                    <p>rented room(s)</p>
-                                </div>
-                            </div>
-                            <div th:classappend="${unrented}&lt;1?'card bg-success':'card bg-danger'">
-                                <div class="card-body text-center">
-                                    <h2 class="card-text" th:text="${unrented}"></h2>
-                                    <p>unrented room(s)</p>
-                                    <p th:if="${unrented}&lt;1">Great job!</p>
-                                </div>
-                            </div>
+                <div class="card-deck">
+                    <div class="card bg-primary">
+                        <div class="card-body text-center">
+                            <h2 class="card-text" th:text="${usersregistered}"></h2>
+                            <p>user(s)</p>
                         </div>
+                    </div>
+                    <div class="card bg-warning">
+                        <div class="card-body text-center">
+                            <h2 class="card-text" th:text="${rented}"></h2>
+                            <p>rented room(s)</p>
+                        </div>
+                    </div>
+                    <div th:classappend="${unrented}&lt;1?'card bg-success':'card bg-danger'">
+                        <div class="card-body text-center">
+                            <h2 class="card-text" th:text="${unrented}"></h2>
+                            <p>unrented room(s)</p>
+                            <p th:if="${unrented}&lt;1">Great job!</p>
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-            <!--Show private rooms only -->
-            <!--You can make this into a fragment-->
-            <div class="section" sec:authorize="isAuthenticated()">
-                <table class="table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    <tr th:each="aRoom:${rooms}">
-                        <td th:text="${aRoom.description}==''?'No description':${aRoom.description}"></td>
-                        <td th:text="${aRoom.address}"></td>
-                        <td th:text="${aRoom.city}"></td>
-                        <td th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>
-                        <td th:text="${aRoom.privateListing}==true?'Private Listing':'Public Listing'"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!--You can make this into a fragment-->
-            <div class="section" sec:authorize="isAnonymous()">
-                <!--Add Thymeleaf here to display count-->
-
-              <div>  <h3>Public rooms</h3></div>
-
-                <table class="table">
-                    <thead>
-
-                    </thead>
-                    <tbody>
-
-                    <tr th:each="aRoom:${rooms}">
-                        <td th:if="${aRoom.privateListing==false}" th:text="${aRoom.description}==''?'No description':${aRoom.description}"></td>
-                        <td th:if="${aRoom.privateListing==false}" th:text="${aRoom.address}"></td>
-                        <td th:if="${aRoom.privateListing==false}" th:text="${aRoom.city}"></td>
-                        <td th:if="${aRoom.privateListing==false}" th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>
-                    </tr>
-
-                    </tbody>
-                </table>
             </div>
 
         </div>
+        <!--Show private rooms only -->
+        <!--You can make this into a fragment-->
+        <div class="section" sec:authorize="isAuthenticated()">
+            <div><h3>Trivia Questions</h3></div>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Question</th>
+                    <!--<th scope="col">Correct Answer</th>-->
+                    <th scope="col">Answers</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="aTrivia:${trivia}">
+                    <!--need id hidden to post values-->
+                    <td th:text="${aTrivia.id}"></td>
+                    <td th:text="${aTrivia.category}"></td>
+                    <td th:text="${aTrivia.type}"></td>
+                    <td th:text="${aTrivia.difficulty}"></td>
+                    <td th:text="${aTrivia.question}"></td>
+                    <!--<td th:text="${aTrivia.correct_answer}"></td>-->
+                    <td><div th:each="anIncorrectAnswer:${aTrivia.incorrect_answers}">
+                        <p th:text="${anIncorrectAnswer}"></p>
+                    </div></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<table class="table">-->
+            <!--<thead>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr th:each="aRoom:${rooms}">-->
+            <!--<td th:text="${aRoom.description}==''?'No description':${aRoom.description}"></td>-->
+            <!--<td th:text="${aRoom.address}"></td>-->
+            <!--<td th:text="${aRoom.city}"></td>-->
+            <!--<td th:text="${aRoom.wifi}==true?'Has wifi':'No wifi'"></td>-->
+            <!--<td th:text="${aRoom.privateListing}==true?'Private Listing':'Public Listing'"></td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+            <!--</table>-->
+        </div>
+
+        <!--You can make this into a fragment-->
+        <div class="section" sec:authorize="hasAuthority('ADMIN')">
+            <!--Add Thymeleaf here to display count-->
+
+            <div><h3>Trivia Answers</h3></div>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Question</th>
+                    <th scope="col">Correct Answer</th>
+                    <th scope="col">Incorrect Answer</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="aTrivia:${trivia}">
+                    <td th:text="${aTrivia.id}"></td>
+                    <td th:text="${aTrivia.category}"></td>
+                    <td th:text="${aTrivia.type}"></td>
+                    <td th:text="${aTrivia.difficulty}"></td>
+                    <td th:text="${aTrivia.question}"></td>
+                    <td th:text="${aTrivia.correct_answer}"></td>
+                    <td><div th:each="anIncorrectAnswer:${aTrivia.incorrect_answers}">
+                        <p th:text="${anIncorrectAnswer}"></p>
+                    </div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </div>
 
 
